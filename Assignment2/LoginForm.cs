@@ -19,7 +19,7 @@ namespace WinFormsTextEditor
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Thank you for pressing the button!");
+            Application.Run(new TextEditForm());
         }
 
         private void label1_Click(object sender, EventArgs e)
