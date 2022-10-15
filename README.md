@@ -1,13 +1,5 @@
 <a name="readme-top"></a>
 
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/johnballauts/WinFormsTextEditor">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
 <h3 align="center">Windows Forms Text Editor</h3>
 
   <p align="center">
@@ -85,17 +77,8 @@ Follow these steps to download the project and get started.
 - [ ] Text Editor Window
     - [ ] Menu Strip
         - [ ] File Menu
-            - [ ] New
-            - [ ] Open
-            - [ ] Save
-            - [ ] Save As
-            - [ ] Logout
         - [ ] Edit Menu
-            - [ ] Cut
-            - [ ] Copy
-            - [ ] Paste
         - [ ] Help Menu
-            - [ ] About
     - [ ] Top Tool Strip
         - [ ] File Menu options
         - [ ] Bold/Italic/Underline options
@@ -103,7 +86,6 @@ Follow these steps to download the project and get started.
         - [ ] Tool Tips on icons
         - [ ] Display Username
     - [ ] Left Tool Strip
-        - [ ] Edit Menu Options
     - [ ] Text Editing Area
 - [ ] Login Window
     - [ ] Login validation
