@@ -39,5 +39,11 @@ namespace WinFormsTextEditor
         {
 
         }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormProvider.TextEdit.Hide();
+            FormProvider.Login.Show();
+        }
     }
 }

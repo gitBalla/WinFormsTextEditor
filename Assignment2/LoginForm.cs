@@ -19,7 +19,8 @@ namespace WinFormsTextEditor
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            Application.Run(new TextEditForm());
+            FormProvider.Login.Hide();
+            FormProvider.TextEdit.Show();
         }
 
         private void label1_Click(object sender, EventArgs e)
