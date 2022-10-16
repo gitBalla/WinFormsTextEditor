@@ -17,19 +17,15 @@ namespace WinFormsTextEditor
             InitializeComponent();
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Thank you for pressing the button!");
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void LoginForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void LoginButton_Click(object sender, EventArgs e)
+        {
+            FormProvider.Login.Hide();
+            FormProvider.TextEdit.Show();
         }
     }
 }
