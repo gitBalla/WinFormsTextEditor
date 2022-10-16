@@ -14,6 +14,7 @@ namespace WinFormsTextEditor
 
         private static LoginForm login;
         private static TextEditForm textEdit;
+        private static RegisterForm register;
 
         public static LoginForm Login
         { //return login after making one if it doesn't exist
@@ -23,6 +24,12 @@ namespace WinFormsTextEditor
         public static TextEditForm TextEdit
         { //return text editor after making one if it doesn't exist
             get { return textEdit ??= new TextEditForm(); }
+        }
+
+        public static RegisterForm Register
+        {
+            //return register form after making one if it doesn't exist
+            get { return register ??= new RegisterForm(); }
         }
     }
 }

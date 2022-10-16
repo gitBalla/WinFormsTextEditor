@@ -17,11 +17,6 @@ namespace WinFormsTextEditor
             InitializeComponent();
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void LoginButton_Click(object sender, EventArgs e)
         {
             string username = UsernameTextBox.Text;
@@ -37,8 +32,7 @@ namespace WinFormsTextEditor
         private void NewUserButton_Click(object sender, EventArgs e)
         {
             FormProvider.Login.Hide();
-            Application.Exit(); //remove and uncomment below when register implemented
-            //FormProvider.Register.Show();
+            FormProvider.Register.Show();
         }
 
         private void LoginForm_Closing(object sender, FormClosingEventArgs e)

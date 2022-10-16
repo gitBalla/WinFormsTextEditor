@@ -132,7 +132,6 @@ namespace WinFormsTextEditor
             this.Name = "LoginForm";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "Login";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
             this.ResumeLayout(false);
