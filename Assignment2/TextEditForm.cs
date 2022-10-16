@@ -17,7 +17,7 @@ namespace WinFormsTextEditor
 
         private void TextEditForm_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void boldToolStripButton_Click(object sender, EventArgs e)
@@ -42,13 +42,20 @@ namespace WinFormsTextEditor
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormProvider.TextEdit.Hide();
-            FormProvider.Login.Show();
+            MessageBox.Show("Logout Complete.", "Logout", MessageBoxButtons.OK);
+            Program.Context.LoadLoginForm();
+            this.Close();
         }
 
-        private void TextEditForm_Closing(object sender, FormClosingEventArgs e)
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Context.LoadTextEditForm();
+            this.Close();
         }
     }
 }

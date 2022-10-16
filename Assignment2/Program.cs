@@ -8,6 +8,9 @@ namespace WinFormsTextEditor
 {
     static class Program
     {
+        //start from context to keep app open between forms
+        internal static MyApplicationContext Context = new MyApplicationContext();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -17,8 +20,7 @@ namespace WinFormsTextEditor
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //application always starts from login
-            Application.Run(FormProvider.Login);
+            Application.Run(Context);
         }
     }
 }

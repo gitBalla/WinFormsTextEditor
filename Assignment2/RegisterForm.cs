@@ -10,14 +10,28 @@ namespace WinFormsTextEditor
 {
     public partial class RegisterForm : Form
     {
+        enum UserType { Edit, View }
+
         public RegisterForm()
         {
             InitializeComponent();
         }
 
-        private void RegisterForm_Closing(object sender, FormClosingEventArgs e)
+        private void RegisterForm_Load(object sender, EventArgs e)
         {
-            Application.Exit();
+            UserTypeComboBox.DataSource = Enum.GetValues(typeof(UserType));
+        }
+
+        private void SubmitButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Registration Cancelled.", "Registration", MessageBoxButtons.OK);
+            Program.Context.LoadLoginForm();
+            this.Close();
         }
     }
 }

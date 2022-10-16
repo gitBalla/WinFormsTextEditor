@@ -42,7 +42,7 @@ namespace WinFormsTextEditor
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(23, 123);
+            this.LoginButton.Location = new System.Drawing.Point(104, 123);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
             this.LoginButton.TabIndex = 0;
@@ -100,7 +100,7 @@ namespace WinFormsTextEditor
             // 
             // NewUserButton
             // 
-            this.NewUserButton.Location = new System.Drawing.Point(104, 123);
+            this.NewUserButton.Location = new System.Drawing.Point(23, 123);
             this.NewUserButton.Name = "NewUserButton";
             this.NewUserButton.Size = new System.Drawing.Size(75, 23);
             this.NewUserButton.TabIndex = 2;
@@ -125,13 +125,15 @@ namespace WinFormsTextEditor
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.ExitButton;
             this.ClientSize = new System.Drawing.Size(284, 161);
-            this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.NewUserButton);
+            this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.LoginButton);
             this.Controls.Add(this.LoginGroupBox);
             this.Name = "LoginForm";
             this.Padding = new System.Windows.Forms.Padding(10);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
             this.ResumeLayout(false);
