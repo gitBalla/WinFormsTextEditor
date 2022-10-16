@@ -457,6 +457,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TextEditForm";
             this.Text = "WinText Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TextEditForm_Closing);
             this.Load += new System.EventHandler(this.TextEditForm_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

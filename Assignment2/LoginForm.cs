@@ -24,8 +24,26 @@ namespace WinFormsTextEditor
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
+            string username = UsernameTextBox.Text;
+            string password = PasswordTextBox.Text;
+            Login.ValidateLogin(username, password);
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void NewUserButton_Click(object sender, EventArgs e)
+        {
             FormProvider.Login.Hide();
-            FormProvider.TextEdit.Show();
+            Application.Exit(); //remove and uncomment below when register implemented
+            //FormProvider.Register.Show();
+        }
+
+        private void LoginForm_Closing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

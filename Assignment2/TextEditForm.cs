@@ -46,5 +46,9 @@ namespace WinFormsTextEditor
             FormProvider.Login.Show();
         }
 
+        private void TextEditForm_Closing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

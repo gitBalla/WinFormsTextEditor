@@ -106,6 +106,7 @@ namespace WinFormsTextEditor
             this.NewUserButton.TabIndex = 2;
             this.NewUserButton.Text = "New User";
             this.NewUserButton.UseVisualStyleBackColor = true;
+            this.NewUserButton.Click += new System.EventHandler(this.NewUserButton_Click);
             // 
             // ExitButton
             // 
@@ -115,11 +116,14 @@ namespace WinFormsTextEditor
             this.ExitButton.TabIndex = 3;
             this.ExitButton.Text = "Exit";
             this.ExitButton.UseVisualStyleBackColor = true;
+            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
             // LoginForm
             // 
+            this.AcceptButton = this.LoginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.ExitButton;
             this.ClientSize = new System.Drawing.Size(284, 161);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.NewUserButton);
@@ -128,6 +132,7 @@ namespace WinFormsTextEditor
             this.Name = "LoginForm";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
             this.ResumeLayout(false);
