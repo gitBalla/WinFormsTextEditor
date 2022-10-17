@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.LoginGroupBox = new System.Windows.Forms.GroupBox();
             this.UserTypeComboBox = new System.Windows.Forms.ComboBox();
             this.BirthdateDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -45,7 +46,9 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.CancelButton = new System.Windows.Forms.Button();
             this.SubmitButton = new System.Windows.Forms.Button();
+            this.MyErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.LoginGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MyErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // LoginGroupBox
@@ -68,26 +71,30 @@
             this.LoginGroupBox.Location = new System.Drawing.Point(0, 0);
             this.LoginGroupBox.Name = "LoginGroupBox";
             this.LoginGroupBox.Size = new System.Drawing.Size(284, 244);
-            this.LoginGroupBox.TabIndex = 5;
+            this.LoginGroupBox.TabIndex = 1;
             this.LoginGroupBox.TabStop = false;
             this.LoginGroupBox.Text = "Login Details";
             // 
             // UserTypeComboBox
             // 
+            this.UserTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.UserTypeComboBox.FormattingEnabled = true;
             this.UserTypeComboBox.Location = new System.Drawing.Point(79, 202);
             this.UserTypeComboBox.Name = "UserTypeComboBox";
             this.UserTypeComboBox.Size = new System.Drawing.Size(171, 23);
-            this.UserTypeComboBox.TabIndex = 16;
+            this.UserTypeComboBox.TabIndex = 7;
             // 
             // BirthdateDateTimePicker
             // 
             this.BirthdateDateTimePicker.CustomFormat = "dd-MM-yyyy";
             this.BirthdateDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.BirthdateDateTimePicker.Location = new System.Drawing.Point(79, 173);
+            this.BirthdateDateTimePicker.MaxDate = new System.DateTime(2022, 10, 18, 0, 0, 0, 0);
             this.BirthdateDateTimePicker.Name = "BirthdateDateTimePicker";
             this.BirthdateDateTimePicker.Size = new System.Drawing.Size(171, 23);
-            this.BirthdateDateTimePicker.TabIndex = 15;
+            this.BirthdateDateTimePicker.TabIndex = 6;
+            this.BirthdateDateTimePicker.Value = new System.DateTime(2022, 10, 17, 0, 0, 0, 0);
+            this.BirthdateDateTimePicker.ValueChanged += new System.EventHandler(this.BirthdateDateTimePicker_ValueChanged);
             // 
             // UserTypeLabel
             // 
@@ -112,7 +119,7 @@
             this.LastNameTextBox.Location = new System.Drawing.Point(79, 144);
             this.LastNameTextBox.Name = "LastNameTextBox";
             this.LastNameTextBox.Size = new System.Drawing.Size(171, 23);
-            this.LastNameTextBox.TabIndex = 11;
+            this.LastNameTextBox.TabIndex = 5;
             // 
             // LastNameLabel
             // 
@@ -129,7 +136,7 @@
             this.ReEnterPasswordTextBox.Name = "ReEnterPasswordTextBox";
             this.ReEnterPasswordTextBox.PasswordChar = '*';
             this.ReEnterPasswordTextBox.Size = new System.Drawing.Size(171, 23);
-            this.ReEnterPasswordTextBox.TabIndex = 9;
+            this.ReEnterPasswordTextBox.TabIndex = 3;
             this.ReEnterPasswordTextBox.UseSystemPasswordChar = true;
             // 
             // ReEnterPasswordLabel
@@ -146,7 +153,7 @@
             this.FirstNameTextBox.Location = new System.Drawing.Point(79, 115);
             this.FirstNameTextBox.Name = "FirstNameTextBox";
             this.FirstNameTextBox.Size = new System.Drawing.Size(171, 23);
-            this.FirstNameTextBox.TabIndex = 7;
+            this.FirstNameTextBox.TabIndex = 4;
             // 
             // FirstNameLabel
             // 
@@ -163,7 +170,7 @@
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(171, 23);
-            this.PasswordTextBox.TabIndex = 3;
+            this.PasswordTextBox.TabIndex = 2;
             this.PasswordTextBox.UseSystemPasswordChar = true;
             // 
             // UsernameTextBox
@@ -171,7 +178,7 @@
             this.UsernameTextBox.Location = new System.Drawing.Point(79, 25);
             this.UsernameTextBox.Name = "UsernameTextBox";
             this.UsernameTextBox.Size = new System.Drawing.Size(171, 23);
-            this.UsernameTextBox.TabIndex = 2;
+            this.UsernameTextBox.TabIndex = 1;
             // 
             // PasswordLabel
             // 
@@ -196,7 +203,7 @@
             this.CancelButton.Location = new System.Drawing.Point(175, 260);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 6;
+            this.CancelButton.TabIndex = 9;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -206,17 +213,20 @@
             this.SubmitButton.Location = new System.Drawing.Point(94, 260);
             this.SubmitButton.Name = "SubmitButton";
             this.SubmitButton.Size = new System.Drawing.Size(75, 23);
-            this.SubmitButton.TabIndex = 4;
+            this.SubmitButton.TabIndex = 8;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
             this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
+            // 
+            // MyErrorProvider
+            // 
+            this.MyErrorProvider.ContainerControl = this;
             // 
             // RegisterForm
             // 
             this.AcceptButton = this.SubmitButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(284, 301);
             this.Controls.Add(this.LoginGroupBox);
             this.Controls.Add(this.CancelButton);
@@ -227,6 +237,7 @@
             this.Load += new System.EventHandler(this.RegisterForm_Load);
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MyErrorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -250,5 +261,6 @@
         private System.Windows.Forms.Label ReEnterPasswordLabel;
         private System.Windows.Forms.TextBox FirstNameTextBox;
         private System.Windows.Forms.Label FirstNameLabel;
+        private System.Windows.Forms.ErrorProvider MyErrorProvider;
     }
 }

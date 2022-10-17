@@ -42,10 +42,10 @@ namespace WinFormsTextEditor
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(104, 123);
+            this.LoginButton.Location = new System.Drawing.Point(23, 123);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
-            this.LoginButton.TabIndex = 0;
+            this.LoginButton.TabIndex = 3;
             this.LoginButton.Text = "Login";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
@@ -60,7 +60,7 @@ namespace WinFormsTextEditor
             this.LoginGroupBox.Location = new System.Drawing.Point(10, 10);
             this.LoginGroupBox.Name = "LoginGroupBox";
             this.LoginGroupBox.Size = new System.Drawing.Size(264, 100);
-            this.LoginGroupBox.TabIndex = 1;
+            this.LoginGroupBox.TabIndex = 0;
             this.LoginGroupBox.TabStop = false;
             this.LoginGroupBox.Text = "Login Details";
             // 
@@ -70,7 +70,7 @@ namespace WinFormsTextEditor
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(171, 23);
-            this.PasswordTextBox.TabIndex = 3;
+            this.PasswordTextBox.TabIndex = 2;
             this.PasswordTextBox.UseSystemPasswordChar = true;
             // 
             // UsernameTextBox
@@ -78,7 +78,7 @@ namespace WinFormsTextEditor
             this.UsernameTextBox.Location = new System.Drawing.Point(79, 25);
             this.UsernameTextBox.Name = "UsernameTextBox";
             this.UsernameTextBox.Size = new System.Drawing.Size(171, 23);
-            this.UsernameTextBox.TabIndex = 2;
+            this.UsernameTextBox.TabIndex = 1;
             // 
             // PasswordLabel
             // 
@@ -100,10 +100,10 @@ namespace WinFormsTextEditor
             // 
             // NewUserButton
             // 
-            this.NewUserButton.Location = new System.Drawing.Point(23, 123);
+            this.NewUserButton.Location = new System.Drawing.Point(104, 123);
             this.NewUserButton.Name = "NewUserButton";
             this.NewUserButton.Size = new System.Drawing.Size(75, 23);
-            this.NewUserButton.TabIndex = 2;
+            this.NewUserButton.TabIndex = 4;
             this.NewUserButton.Text = "New User";
             this.NewUserButton.UseVisualStyleBackColor = true;
             this.NewUserButton.Click += new System.EventHandler(this.NewUserButton_Click);
@@ -113,7 +113,7 @@ namespace WinFormsTextEditor
             this.ExitButton.Location = new System.Drawing.Point(185, 123);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(75, 23);
-            this.ExitButton.TabIndex = 3;
+            this.ExitButton.TabIndex = 5;
             this.ExitButton.Text = "Exit";
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);

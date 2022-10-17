@@ -18,11 +18,29 @@ namespace WinFormsTextEditor
             InitializeComponent();
         }
 
+        internal void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void LoginButton_Click(object sender, EventArgs e)
         {
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Text;
-            ValidateLogin(username, password);
+
+            //approves login if valid credentials given, otherwise sends to retry
+            string[] userFields = Validator.GetValidUser(username, password);
+            if (userFields != null)
+            {
+                User user = new User(userFields);
+                MessageBox.Show($"Hello, {user.FirstName}. Press OK to continue", "Login Successful!", MessageBoxButtons.OK);
+                Program.Context.LoadTextEditForm(user);
+                this.Close();
+            }
+            else
+            {
+                PasswordTextBox.Clear();
+            }
         }
 
         private void NewUserButton_Click(object sender, EventArgs e)
@@ -34,43 +52,6 @@ namespace WinFormsTextEditor
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-
-        internal void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ValidateLogin(string username, string password)
-        {
-            //member variables
-            string fileName = "login.txt";
-
-            //validate input
-
-            //validate the credentials
-            try
-            {
-                //check file exists and is not empty
-                Validator.IsFile(fileName);
-                Validator.IsFileEmpty(fileName);
-                Validator.ValidateCredentials(fileName, username, password);
-                MessageBox.Show("Press OK to continue", "Login Successful!", MessageBoxButtons.OKCancel);
-                Program.Context.LoadTextEditForm();
-                this.Close();
-            }
-            catch (FileNotFoundException e)
-            {
-                MessageBox.Show("Ensure login file is present before relaunching.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (ApplicationException e)
-            {
-                MessageBox.Show("Ensure login file has a valid user before relaunching.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (IOException e)
-            {
-                MessageBox.Show("Username or Password invalid, try again.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }

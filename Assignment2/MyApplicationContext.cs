@@ -44,10 +44,11 @@ namespace WinFormsTextEditor
             login.Show();
         }
 
-        internal void LoadTextEditForm()
+        internal void LoadTextEditForm(User user)
         {
             formCount++;
             textEdit = new TextEditForm();
+            textEdit.CurrentUser = user;
             textEdit.Closed += new EventHandler(OnFormClosed);
             textEdit.Show();
         }

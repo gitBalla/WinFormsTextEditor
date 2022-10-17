@@ -1,83 +1,120 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Linq;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WinFormsTextEditor
 {
     internal static class Validator
     {
-        /* INPUT RESTRICTION */
-
-        //checks key input for legitimate characters
-        internal static bool IsCharInput(ConsoleKeyInfo key)
-        {
-            return ((((int)key.Key) >= 65 && ((int)key.Key <= 90)) ||
-                (((int)key.Key) >= 106 && ((int)key.Key <= 107)) ||
-                (((int)key.Key) >= 109 && ((int)key.Key <= 111)) ||
-                IsNumInput(key, 0, 9) //0, 9 allows all input 0-9
-                );
-        }
-
-        //checks key input for legitimate numbers
-        internal static bool IsNumInput(ConsoleKeyInfo key, int start, int limit)
-        {
-            return ((((int)key.Key) >= (48 + start) && ((int)key.Key <= (48 + limit))) ||
-                (((int)key.Key) >= (96 + start) && ((int)key.Key <= (96 + limit)))
-                );
-        }
-
         /* INPUT VALIDATION */
 
         internal static void IsFieldComplete(string field, string descriptor)
         {
-            if (field == "") throw new IOException($"Missing '{descriptor}' field! Please enter all fields.\n\n");
-        }
-
-        //unused at the moment, planned feature email print preview
-        internal static void IsEmailValid(String entry)
-        {
-            //basic regex (alphanumeric > 1 digit, @, alpha > 1 digit, ., alpha > 1 digit, ., alpha between 1-4 digits)
-            var regex = new Regex(@"[a-zA-Z0-9-]{1,}@([a-zA-Z\.])?[a-zA-Z]{1,}\.[a-zA-Z]{1,4}");
-            var match = regex.Match(entry);
-            if (!match.Success)
-            {
-                throw new IOException("Invalid Email! Try name@domain.com or .com.au\n\n");
-            }
-        }
-
-        //check entry is a valid 6-10 digit integer
-        internal static void IsIntValid(string entry, string name)
-        {
-            bool success = (int.TryParse(entry, out _)) && entry.Length >= 6 && entry.Length <= 10;
-            if (!success)
-            {
-                throw new IOException($"Invalid {name} Number! Must be 6 to 10 numeric digits.\n\n");
-            }
+            if (field == "") 
+                throw new IOException($"Missing '{descriptor}' field! Please enter all fields.\n\n");
         }
 
         //checks a file for matching user credentials listed as user|password
-        internal static void ValidateCredentials(string fileName, string user, string password)
+        internal static string[] GetValidUser(string username, string password)
         {
-            //read each line of the file
-            foreach (string line in File.ReadLines(fileName))
+            try
             {
-                //split the credentials and compare each, return if validated
-                string[] credentials = line.Split(',');
-                if (credentials[0].Equals(user))
+                //check if fields have been filled in
+                IsFieldComplete(username, "username");
+                IsFieldComplete(password, "password");
+
+                //check file exists and is not empty
+                IsFileValid(Program.loginFile);
+
+                //find the user validate password
+                int userLine = GetUserLineNumber(username);
+                if (userLine >= 0)
                 {
-                    if (credentials[1].Equals(password)) return;
+                    string[] credentials = File.ReadLines(Program.loginFile).Skip(userLine - 1).FirstOrDefault().Split(',');
+                    if (credentials[1].Equals(password)) return credentials;
+                }
+                else
+                {
+                    MessageBox.Show("Username or Password invalid, try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            //throws if no validation occurs
-            throw new IOException("Invalid Credentials!\n\n");
+            catch (FileNotFoundException e)
+            {
+                MessageBox.Show("Ensure login file is present.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (ApplicationException e)
+            {
+                MessageBox.Show("Ensure login file has a valid user.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show("Enter all fields to login.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
+        internal static bool IsUserValid(string[] fields)
+        {
+            try
+            {
+                //check if fields have been filled in
+                IsFieldComplete(fields[0], "Username");
+                IsFieldComplete(fields[1], "Password");
+                IsFieldComplete(fields[2], "First Name");
+                IsFieldComplete(fields[3], "Last Name");
+                IsFieldComplete(fields[4], "Birthdate");
+                IsFieldComplete(fields[5], "User-Type");
+
+                //check file exists and is not empty
+                IsFileValid(Program.loginFile);
+
+                //check user doesn't already exist
+                int userLine = GetUserLineNumber(fields[0]);
+                if (userLine < 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Username already exists.\nPlease login or try another username", "Registration Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                MessageBox.Show("Ensure login file is present.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (ApplicationException e)
+            {
+                MessageBox.Show("Ensure login file has a valid user.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show("Enter all fields to login.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
+        }
+
+        internal static int GetUserLineNumber(string username)
+        {
+            //read each line of the file and get the line number of the user
+            int lineNum = 0;
+            foreach (string line in File.ReadLines(Program.loginFile))
+            {   //split the credentials and compare each, return lineNum if validated
+                string[] credentials = line.Split(',');
+                if (credentials[0].Equals(username))
+                {
+                    return lineNum;
+                }
+                lineNum++;
+            }
+            return -1;
         }
 
         /* FILE VALIDATION  */
 
-        internal static bool IsFile(string fileName)
+        internal static bool IsFileValid(string fileName)
         {
             //check if file exists
             if (!File.Exists(fileName))
@@ -85,18 +122,13 @@ namespace WinFormsTextEditor
                 throw new FileNotFoundException($"File {fileName} not found!\n\n");
             }
 
-            return true;
-        }
-
-        internal static bool IsFileEmpty(string fileName)
-        {
             //check if file is not empty
             if (new FileInfo(fileName).Length == 0)
             {
                 throw new ApplicationException($"File {fileName} is empty!\n\n");
             }
 
-            return false;
+            return true;
         }
     }
 }

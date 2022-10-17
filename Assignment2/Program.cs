@@ -8,6 +8,9 @@ namespace WinFormsTextEditor
 {
     static class Program
     {
+        //Class member variables
+        internal const string loginFile = "login.txt";
+
         //start from context to keep app open between forms
         internal static MyApplicationContext Context = new MyApplicationContext();
 
