@@ -14,6 +14,7 @@ namespace WinFormsTextEditor
     {
         internal User CurrentUser {get;set;}
         string filename;
+        string fileExt;
         object[] fontRange = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 
         //Constructor
@@ -21,6 +22,7 @@ namespace WinFormsTextEditor
         {
             InitializeComponent();
             filename = NextFileName();
+            fileExt = ".rtf";
         }
 
         // actions on form load-in
@@ -54,7 +56,7 @@ namespace WinFormsTextEditor
             {
                 fileNumberSeed++;
             }
-            return "WinForm" + fileNumberSeed + ".rtf";
+            return "WinForm" + fileNumberSeed;
         }
 
         // NEW EDITOR ACTIONS/METHODS
@@ -90,21 +92,31 @@ namespace WinFormsTextEditor
             //Instantiate new dialog
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Title = "Open a Rich Text File",
-                Filter = "Rich Text Files (*.rtf) | *.rtf",
+                Title = "Open a Text File",
+                Filter = "Rich Text Files (*.rtf) | *.rtf|Text Files (*.txt)|*.txt",
                 InitialDirectory = Directory.GetCurrentDirectory(),
             };
 
             //Show the dialog
             DialogResult dr = openFileDialog.ShowDialog();
+            int filterResult = openFileDialog.FilterIndex;
 
             //Open file on user response
             if (dr == DialogResult.OK)
             {
                 string file = openFileDialog.FileName;
-                RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
-                filename = openFileDialog.SafeFileName;
+                if(filterResult == 1)
+                {
+                    RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
+                } 
+                else if (filterResult == 2)
+                {
+                    RichTextBox.LoadFile(file, RichTextBoxStreamType.PlainText);
+                }
+
+                filename = Path.GetFileNameWithoutExtension(openFileDialog.SafeFileName);
                 UpdateUsernameLabel(filename);
+                fileExt = Path.GetExtension(openFileDialog.SafeFileName);
             }
         }
 
@@ -122,7 +134,7 @@ namespace WinFormsTextEditor
         private void saveFile()
         {
             //Save file based on next available file name, in the user's personal folder
-            RichTextBox.SaveFile(@$"AutoSave\{filename}");
+            RichTextBox.SaveFile(@$"AutoSave\{filename}{fileExt}");
             UpdateUsernameLabel(filename);
         }
 
@@ -142,12 +154,13 @@ namespace WinFormsTextEditor
             //Instantiate new dialog
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Title = "Save a Rich Text File",
-                Filter = "Rich Text Files (*.rtf) | *.rtf",
+                Title = "Open a Text File",
+                Filter = "Rich Text Files (*.rtf) | *.rtf|Text Files (*.txt)|*.txt",
             };
 
             //Show the dialog
             DialogResult dr = saveFileDialog.ShowDialog();
+            int filterResult = saveFileDialog.FilterIndex;
 
             //Save file on user response
             if (dr == DialogResult.OK)
@@ -158,9 +171,18 @@ namespace WinFormsTextEditor
                 {
                     //save file by filestream from OpenFile
                     FileStream fs = (FileStream)saveFileDialog.OpenFile();
-                    RichTextBox.SaveFile(fs, RichTextBoxStreamType.RichText);
-                    fs.Close();
-                    RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
+                    if (filterResult == 1)
+                    {
+                        RichTextBox.SaveFile(fs, RichTextBoxStreamType.RichText);
+                        fs.Close();
+                        RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
+                    }
+                    else if (filterResult == 2)
+                    {
+                        RichTextBox.SaveFile(fs, RichTextBoxStreamType.PlainText);
+                        fs.Close();
+                        RichTextBox.LoadFile(file, RichTextBoxStreamType.PlainText);
+                    }
                     filename = Path.GetFileNameWithoutExtension(file);
                     UpdateUsernameLabel(filename);
                 }
@@ -240,7 +262,7 @@ namespace WinFormsTextEditor
             {
                 if (RichTextBox.SelectionLength > 0)
                 {
-                    RichTextBox.SelectionStart = RichTextBox.SelectionStart + RichTextBox.SelectionLength;
+                    RichTextBox.SelectionStart += RichTextBox.SelectionLength;
                 }
                 RichTextBox.Paste();
             }
