@@ -96,6 +96,7 @@ namespace WinFormsTextEditor
 
         /* FILE VALIDATION  */
 
+        // validates that a file exists in the bin directory
         internal static void ValidateFileExists(string fileName)
         {
             try

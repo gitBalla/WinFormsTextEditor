@@ -26,11 +26,19 @@ namespace WinFormsTextEditor
         // actions on form load-in
         private void TextEditForm_Load(object sender, EventArgs e)
         {
+            // disable rtb if user is only allowed to view
+            RichTextBox.Enabled = IsAuthorized(CurrentUser.UserType);
+            // update label at start
             usernameLabel.Text = CurrentUser.Username;
             UpdateUsernameLabel("Unsaved File");
+            // set initial font choices and font on load
             fontSizeToolStripComboBox.Items.AddRange(fontRange);
             fontSizeToolStripComboBox.Text = "12";
+            RichTextBox.SelectionFont = new Font(RichTextBox.Font.FontFamily, 12);
         }
+
+        // checks if user is authorized based on usertype, true for edit, false for view
+        bool IsAuthorized(UserType userType) => userType == UserType.View ? false : true;
 
         // updates username label
         private void UpdateUsernameLabel(string currentFileName)
@@ -162,8 +170,14 @@ namespace WinFormsTextEditor
         // FONT SIZE ACTIONS/METHODS
         private void fontSizeToolStripComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // get the current font/size/style
             Font currentFont = RichTextBox.SelectionFont;
-            RichTextBox.SelectionFont = new Font(currentFont.FontFamily, int.Parse(fontSizeToolStripComboBox.Text), currentFont.Style);
+
+            // if text is selected, change the text size
+            if (RichTextBox.SelectionLength > 0)
+            {
+                RichTextBox.SelectionFont = new Font(currentFont.FontFamily, int.Parse(fontSizeToolStripComboBox.Text), currentFont.Style);
+            }
         }
 
         // TEXT TOOLS ACTIONS/METHODS
@@ -174,14 +188,34 @@ namespace WinFormsTextEditor
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Cut();
+        }
+
+        private void cutToolStripButton_Click(object sender, EventArgs e)
+        {
+            Cut();
+        }
+
+        private void Cut()
+        {
             // if text is selected, cut the text from the box and paste it to the clipboard
-            if(RichTextBox.SelectionLength > 0)
+            if (RichTextBox.SelectionLength > 0)
             {
                 RichTextBox.Cut();
             }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Copy();
+        }
+
+        private void copyToolStripButton_Click(object sender, EventArgs e)
+        {
+            Copy();
+        }
+
+        private void Copy()
         {
             // if text is selected, copy the text from the box to the clipboard
             if (RichTextBox.SelectionLength > 0)
@@ -192,7 +226,17 @@ namespace WinFormsTextEditor
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
+            Paste();
+        }
+
+        private void pasteToolStripButton_Click(object sender, EventArgs e)
+        {
+            Paste();
+        }
+
+        private void Paste()
+        {
+            if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
             {
                 if (RichTextBox.SelectionLength > 0)
                 {
@@ -202,24 +246,28 @@ namespace WinFormsTextEditor
             }
         }
 
-
-
+        // TEXT STYLE ACTIONS/METHODS
         private void boldToolStripButton_Click(object sender, EventArgs e)
         {
-
+            ToggleFontStyle(FontStyle.Bold);
         }
 
         private void italicToolStripButton_Click(object sender, EventArgs e)
         {
-
+            ToggleFontStyle(FontStyle.Italic);
         }
 
         private void underlineToolStripButton_Click(object sender, EventArgs e)
         {
-
+            ToggleFontStyle(FontStyle.Underline);
         }
-
-
+        
+        private void ToggleFontStyle(FontStyle style)
+        {
+            Font currentFont = RichTextBox.SelectionFont;
+            FontStyle currentFontStyle = currentFont.Style ^ style;
+            RichTextBox.SelectionFont = new Font(currentFont.FontFamily, currentFont.Size, currentFontStyle);
+        }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -238,6 +286,48 @@ namespace WinFormsTextEditor
         private void TextEditForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Program.Context.UserList.SaveUsers();
+        }
+
+        // ABOUT WINDOW ACTIONS/METHODS
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowAboutWindow();
+        }
+
+        private void helpToolStripButton_Click(object sender, EventArgs e)
+        {
+            ShowAboutWindow();
+        }
+
+        private void ShowAboutWindow()
+        {
+            Form prompt = new Form
+            {
+                Width = 400,
+                Height = 200,
+                Text = "About"
+            };
+            Label textLabel = new Label()
+            {
+                Left = 25,
+                Width = 350,
+                Height = 150,
+                Top = 20,
+                Text = $"{Program.name} version {Program.version}.\n" +
+                $"Last updated on {Program.repository} on {Program.versionDate}.\n" +
+                $"Author: {Program.author}"
+            };
+            Button confirmation = new Button()
+            { 
+                Text = "Ok",
+                Left = 150,
+                Width = 100,
+                Top = 100
+            };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.ShowDialog();
         }
     }
 }

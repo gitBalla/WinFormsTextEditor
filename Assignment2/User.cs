@@ -48,6 +48,11 @@ namespace WinFormsTextEditor
             get { return firstName; }
         }
 
+        internal UserType UserType
+        {
+            get { return userType; }
+        }
+
         // Method to append user data to a line of login.txt
         private void WriteUserLine()
         {
