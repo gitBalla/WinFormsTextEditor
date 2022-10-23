@@ -10,6 +10,8 @@ namespace WinFormsTextEditor
 {
     public partial class TextEditForm : Form
     {
+        internal User CurrentUser {get;set;}
+
         public TextEditForm()
         {
             InitializeComponent();
@@ -17,7 +19,7 @@ namespace WinFormsTextEditor
 
         private void TextEditForm_Load(object sender, EventArgs e)
         {
-
+            usernameLabel.Text = CurrentUser.Username;
         }
 
         private void boldToolStripButton_Click(object sender, EventArgs e)
@@ -42,8 +44,32 @@ namespace WinFormsTextEditor
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FormProvider.TextEdit.Hide();
-            FormProvider.Login.Show();
+            Program.Context.UserList.SaveUsers();
+            MessageBox.Show("Logout Complete.", "Logout", MessageBoxButtons.OK);
+            Program.Context.LoadLoginForm();
+            this.Close();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Context.UserList.SaveUsers();
+            Application.Exit();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.Context.LoadTextEditForm(CurrentUser);
+            this.Close();
+        }
+
+        private void usernameLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextEditForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program.Context.UserList.SaveUsers();
         }
     }
 }

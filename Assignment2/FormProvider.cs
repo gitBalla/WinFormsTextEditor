@@ -9,24 +9,29 @@ namespace WinFormsTextEditor
     {
         /// <summary>
         ///  Singleton pattern for managing form windows
+        ///  Uses '??=' null coalescing operator to instantiate if null
         /// </summary>
+
+        private static LoginForm login;
+        private static TextEditForm textEdit;
+        private static RegisterForm register;
+
         public static LoginForm Login
-        {
-            get
-            {   //if login doesn't exist, make one, then return
-                login ??= new LoginForm();
-                return login;
-            }
+        { //return login after making one if it doesn't exist
+            get { return login ??= new LoginForm(); }
+        }
         }
         private static LoginForm login;
 
         public static TextEditForm TextEdit
+        { //return text editor after making one if it doesn't exist
+            get { return textEdit ??= new TextEditForm(); }
+        }
+
+        public static RegisterForm Register
         {
-            get
-            {   //if text editor doesn't exist, make one, then return
-                textEdit ??= new TextEditForm();
-                return textEdit;
-            }
+            //return register form after making one if it doesn't exist
+            get { return register ??= new RegisterForm(); }
         }
         private static TextEditForm textEdit;
     }
