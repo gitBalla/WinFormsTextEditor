@@ -33,12 +33,10 @@ namespace WinFormsTextEditor
                 if (userLine >= 0)
                 {
                     string[] credentials = File.ReadLines(Program.loginFile).Skip(userLine - 1).FirstOrDefault().Split(',');
-                    if (credentials[1].Equals(password)) return credentials;
+                    if (credentials[1].Equals(password))
+                        return credentials;
                 }
-                else
-                {
-                    MessageBox.Show("Username or Password invalid, try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Username or Password invalid, try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (FileNotFoundException e)
             {

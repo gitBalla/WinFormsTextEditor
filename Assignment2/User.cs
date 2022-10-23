@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace WinFormsTextEditor
@@ -38,8 +39,12 @@ namespace WinFormsTextEditor
             this.birthdate = Convert.ToDateTime(fields[5]);
         }
 
-        internal string Username { get; }
-        internal string FirstName { get; }
+        internal string Username {
+            get { return username; }
+        }
+        internal string FirstName {
+            get { return firstName; }
+        }
 
 
         private void WriteUserLine(string fileName)
