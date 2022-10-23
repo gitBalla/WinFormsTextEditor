@@ -74,23 +74,23 @@ Follow these steps to download the project and get started.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Text Editor Window
-    - [ ] Menu Strip
-        - [ ] File Menu
-        - [ ] Edit Menu
-        - [ ] Help Menu
-    - [ ] Top Tool Strip
-        - [ ] File Menu options
-        - [ ] Bold/Italic/Underline options
-        - [ ] Font Size
-        - [ ] Tool Tips on icons
-        - [ ] Display Username
-    - [ ] Left Tool Strip
-    - [ ] Text Editing Area
-- [ ] Login Window
-    - [ ] Login validation
-- [ ] New User Window
-    - [ ] Unique username registration function
+- [✓] Text Editor Window
+    - [✓] Menu Strip
+        - [✓] File Menu
+        - [✓] Edit Menu
+        - [✓] Help Menu
+    - [✓] Top Tool Strip
+        - [✓] File Menu options
+        - [✓] Bold/Italic/Underline options
+        - [✓] Font Size
+        - [✓] Tool Tips on icons
+        - [✓] Display Username
+    - [✓] Left Tool Strip
+    - [✓] Text Editing Area
+- [✓] Login Window
+    - [✓] Login validation
+- [✓] New User Window
+    - [✓] Unique username registration function
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
