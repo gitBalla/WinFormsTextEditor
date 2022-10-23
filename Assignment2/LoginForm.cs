@@ -28,19 +28,26 @@ namespace WinFormsTextEditor
             string username = UsernameTextBox.Text;
             string password = PasswordTextBox.Text;
 
-            //approves login if valid credentials given, otherwise sends to retry
-            string[] userFields = Validator.GetValidUser(username, password);
-            if (userFields != null)
+            // Validate that user input is not blank, and doesn't violate any restrictions
+            if (Validator.ValidateUserInput(username, password))
             {
-                User user = new User(userFields);
-                MessageBox.Show($"Hello, {user.FirstName}. Press OK to continue", "Login Successful!", MessageBoxButtons.OK);
-                Program.Context.LoadTextEditForm(user);
-                this.Close();
+                //authenticate the user
+                User user = Program.Context.UserList.GetUser(username, password);
+
+                // Close Login form and open editor if successful
+                if (user != null) {
+                    MessageBox.Show($"Hello, {user.FirstName}. Press OK to continue", "Login Successful!", MessageBoxButtons.OK);
+                    Program.Context.LoadTextEditForm(user);
+                    this.Close(); 
+                }
+                else
+                {
+                    MessageBox.Show("Username or Password invalid, try again.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
-            {
-                PasswordTextBox.Clear();
-            }
+
+            // Otherwise clear password
+            PasswordTextBox.Clear();
         }
 
         private void NewUserButton_Click(object sender, EventArgs e)

@@ -11,7 +11,7 @@ namespace WinFormsTextEditor
         //Class member variables
         internal const string loginFile = "login.txt";
 
-        //start from context to keep app open between forms
+        //start from context to keep app open between forms, loads user list
         internal static MyApplicationContext Context = new MyApplicationContext();
 
         /// <summary>
@@ -20,9 +20,12 @@ namespace WinFormsTextEditor
         [STAThread]
         static void Main()
         {
+            //Windows forms settings
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            //Start application
             Application.Run(Context);
         }
     }

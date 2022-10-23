@@ -44,6 +44,7 @@ namespace WinFormsTextEditor
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Program.Context.UserList.SaveUsers();
             MessageBox.Show("Logout Complete.", "Logout", MessageBoxButtons.OK);
             Program.Context.LoadLoginForm();
             this.Close();
@@ -51,6 +52,7 @@ namespace WinFormsTextEditor
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Program.Context.UserList.SaveUsers();
             Application.Exit();
         }
 
@@ -63,6 +65,11 @@ namespace WinFormsTextEditor
         private void usernameLabel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void TextEditForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program.Context.UserList.SaveUsers();
         }
     }
 }

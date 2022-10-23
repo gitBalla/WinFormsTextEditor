@@ -8,26 +8,43 @@ namespace WinFormsTextEditor
 {
     internal class MyApplicationContext : ApplicationContext
     {
-        private int formCount;
+        // Member Variables
+        private static int formCount;
         private static LoginForm login;
         private static TextEditForm textEdit;
         private static RegisterForm register;
+        internal static UserList userList;
 
+        // Constructor
         internal MyApplicationContext()
         {
+            // Keep track of forms so application doesn't close until all forms are closed
             formCount = 0;
 
+            // delegate to manage saving user data at application exit
             Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
 
+            //Ensure login file is in bin directory
+            Validator.ValidateFileExists(Program.loginFile);
+
+            // Load users at start
+            userList = new UserList();
+            userList.LoadUsers();
+
+            // Start login form
             login = new LoginForm();
             login.Closed += new EventHandler(OnFormClosed);
             formCount++;
             login.Show();
         }
 
+        public UserList UserList {
+            get { return userList; }
+        }
+
         private void OnApplicationExit(object sender, EventArgs e)
         {
-            //do data saving here
+            
         }
 
         internal void OnFormClosed(object sender, EventArgs e)
@@ -47,8 +64,10 @@ namespace WinFormsTextEditor
         internal void LoadTextEditForm(User user)
         {
             formCount++;
-            textEdit = new TextEditForm();
-            textEdit.CurrentUser = user;
+            textEdit = new TextEditForm
+            {
+                CurrentUser = user
+            };
             textEdit.Closed += new EventHandler(OnFormClosed);
             textEdit.Show();
         }

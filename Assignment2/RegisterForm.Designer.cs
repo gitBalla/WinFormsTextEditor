@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.LoginGroupBox = new System.Windows.Forms.GroupBox();
             this.UserTypeComboBox = new System.Windows.Forms.ComboBox();
             this.BirthdateDateTimePicker = new System.Windows.Forms.DateTimePicker();
@@ -46,9 +45,7 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.CancelButton = new System.Windows.Forms.Button();
             this.SubmitButton = new System.Windows.Forms.Button();
-            this.MyErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.LoginGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MyErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // LoginGroupBox
@@ -218,10 +215,6 @@
             this.SubmitButton.UseVisualStyleBackColor = true;
             this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
             // 
-            // MyErrorProvider
-            // 
-            this.MyErrorProvider.ContainerControl = this;
-            // 
             // RegisterForm
             // 
             this.AcceptButton = this.SubmitButton;
@@ -237,7 +230,6 @@
             this.Load += new System.EventHandler(this.RegisterForm_Load);
             this.LoginGroupBox.ResumeLayout(false);
             this.LoginGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MyErrorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -261,6 +253,5 @@
         private System.Windows.Forms.Label ReEnterPasswordLabel;
         private System.Windows.Forms.TextBox FirstNameTextBox;
         private System.Windows.Forms.Label FirstNameLabel;
-        private System.Windows.Forms.ErrorProvider MyErrorProvider;
     }
 }

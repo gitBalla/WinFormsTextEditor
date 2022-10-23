@@ -32,12 +32,20 @@ namespace WinFormsTextEditor
                 };
 
             //check if new user is valid
-            if (Validator.IsUserValid(fields))
+            if (Validator.ValidateNewUserInput(fields, ReEnterPasswordTextBox.Text))
             {
-                User user = new User(fields);
-                MessageBox.Show($"Hello, {user.FirstName}. Press OK to continue", "Registration Successful!", MessageBoxButtons.OK);
-                Program.Context.LoadTextEditForm(user);
-                this.Close();
+                if (!Program.Context.UserList.IsUser(fields[0]))
+                {
+                    User user = new User(fields);
+                    Program.Context.UserList.AddUser(user);
+                    MessageBox.Show($"Hello, {user.FirstName}. Press OK to continue", "Registration Successful!", MessageBoxButtons.OK);
+                    Program.Context.LoadTextEditForm(user);
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Username already exists.\nPlease login or try another username", "Registration Error.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
@@ -49,7 +57,6 @@ namespace WinFormsTextEditor
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Registration Cancelled.", "Registration", MessageBoxButtons.OK);
             Program.Context.LoadLoginForm();
             this.Close();
         }

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WinFormsTextEditor
 {
@@ -10,123 +10,107 @@ namespace WinFormsTextEditor
     {
         /* INPUT VALIDATION */
 
-        internal static void IsFieldComplete(string field, string descriptor)
+        // Check all given fields in a list for blank input
+        internal static void ValidateFieldsCompleted<T>(List<(T, string)> fields)
         {
-            if (field == "") 
-                throw new IOException($"Missing '{descriptor}' field! Please enter all fields.\n\n");
+            foreach (var field in fields)
+            {
+                if (field.Item1.ToString() == "")
+                    throw new IOException($"Missing '{field.Item2}' field! Please enter all fields.");
+            }
         }
 
-        //checks a file for matching user credentials listed as user|password
-        internal static string[] GetValidUser(string username, string password)
+        // Check all given fields in a list for restricted input
+        internal static void ValidateRestrictedInput<T>(List<(T, string)> fields)
+        {
+            var restrictedInput = new string[] { "," };
+
+            foreach (var field in fields)
+            {
+                if (restrictedInput.Any(res => field.Item1.ToString().Contains(res)))
+                    throw new IOException("Cannot use ',' in input");
+            }
+        }
+
+        internal static void ValidateFieldsMatch<T>(T field1, string field1Descriptor, T field2, string field2Descriptor)
+        {
+            if (!field1.Equals(field2))
+                throw new IOException($"'{field1Descriptor}' must match '{field2Descriptor}'.");
+        }
+
+        // Checks a file for matching user credentials listed during login
+        internal static bool ValidateUserInput(string username, string password)
         {
             try
             {
+                var fieldsList = new List<(string, string)>() {
+                    ( username, "username" ),
+                    ( password, "password" )
+                };
+
                 //check if fields have been filled in
-                IsFieldComplete(username, "username");
-                IsFieldComplete(password, "password");
+                ValidateFieldsCompleted(fieldsList);
 
-                //check file exists and is not empty
-                IsFileValid(Program.loginFile);
+                //check that no restricted input was given
+                ValidateRestrictedInput(fieldsList);
 
-                //find the user validate password
-                int userLine = GetUserLineNumber(username);
-                if (userLine >= 0)
-                {
-                    string[] credentials = File.ReadLines(Program.loginFile).Skip(userLine - 1).FirstOrDefault().Split(',');
-                    if (credentials[1].Equals(password))
-                        return credentials;
-                }
-                MessageBox.Show("Username or Password invalid, try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (FileNotFoundException e)
-            {
-                MessageBox.Show("Ensure login file is present.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (ApplicationException e)
-            {
-                MessageBox.Show("Ensure login file has a valid user.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
             }
             catch (IOException e)
             {
-                MessageBox.Show("Enter all fields to login.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-            return null;
         }
 
-        internal static bool IsUserValid(string[] fields)
+        // Validates new user input
+        internal static bool ValidateNewUserInput(string[] fields, string passwordValidator)
         {
             try
             {
+                var fieldsList = new List<(string, string)>() {
+                    ( fields[0], "username" ),
+                    ( fields[1], "password" ),
+                    ( fields[2], "First Name" ),
+                    ( fields[3], "Last Name" ),
+                    ( fields[4], "Birthdate" ),
+                    ( fields[5], "User-Type" ),
+                };
+
                 //check if fields have been filled in
-                IsFieldComplete(fields[0], "Username");
-                IsFieldComplete(fields[1], "Password");
-                IsFieldComplete(fields[2], "First Name");
-                IsFieldComplete(fields[3], "Last Name");
-                IsFieldComplete(fields[4], "Birthdate");
-                IsFieldComplete(fields[5], "User-Type");
+                ValidateFieldsCompleted(fieldsList);
 
-                //check file exists and is not empty
-                IsFileValid(Program.loginFile);
+                //check that no restricted input was given
+                ValidateRestrictedInput(fieldsList);
 
-                //check user doesn't already exist
-                int userLine = GetUserLineNumber(fields[0]);
-                if (userLine < 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("Username already exists.\nPlease login or try another username", "Registration Error.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-                MessageBox.Show("Ensure login file is present.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (ApplicationException e)
-            {
-                MessageBox.Show("Ensure login file has a valid user.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ValidateFieldsMatch(fields[1], "Password", passwordValidator, "Re-enter Password");
+
+                return true;
             }
             catch (IOException e)
             {
-                MessageBox.Show("Enter all fields to login.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-            return false;
-        }
-
-        internal static int GetUserLineNumber(string username)
-        {
-            //read each line of the file and get the line number of the user
-            int lineNum = 0;
-            foreach (string line in File.ReadLines(Program.loginFile))
-            {   //split the credentials and compare each, return lineNum if validated
-                string[] credentials = line.Split(',');
-                if (credentials[0].Equals(username))
-                {
-                    return lineNum;
-                }
-                lineNum++;
-            }
-            return -1;
         }
 
         /* FILE VALIDATION  */
 
-        internal static bool IsFileValid(string fileName)
+        internal static void ValidateFileExists(string fileName)
         {
-            //check if file exists
-            if (!File.Exists(fileName))
+            try
             {
-                throw new FileNotFoundException($"File {fileName} not found!\n\n");
+                //check if file exists
+                if (!File.Exists(fileName))
+                {
+                    throw new FileNotFoundException($"File {fileName} not found!\n\n");
+                }
             }
-
-            //check if file is not empty
-            if (new FileInfo(fileName).Length == 0)
+            catch (FileNotFoundException e)
             {
-                throw new ApplicationException($"File {fileName} is empty!\n\n");
+                MessageBox.Show("Ensure login file is present.", e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
             }
-
-            return true;
         }
     }
 }
